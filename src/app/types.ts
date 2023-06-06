@@ -38,6 +38,10 @@ export interface MonthLineChartProps {
     selectedYear: number;
 }
 
+export interface MagnitudeDepthSwitchProps {
+    // TODO
+}
+
 interface arc {
     [index: number]: number[];
 }

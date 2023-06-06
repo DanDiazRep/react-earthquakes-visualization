@@ -40,6 +40,27 @@ const WorldMap = ({
     }
   };
 
+  const depthScaleToColor = (depth: number) => {
+    // min: -1, max: 700 (140)
+    if (depth > 560) {
+      return "#00ff00";
+    } else if (depth > 420) {
+      // Calculate the green value based on the magnitude within the range
+      var green = Math.floor((560 - depth) * (255 / 0.5));
+      return rgbToHex(0, green, 0);
+    } else if (depth > 280) {
+      // Calculate the red value based on the magnitude within the range
+      var red = Math.floor((420 - depth) * (255 / 1.0));
+      return rgbToHex(red, 255, 0);
+    } else if (depth > 140) {
+      // Calculate the green value based on the magnitude within the range
+      var green = Math.floor((280 - depth) * (255 / 1.0));
+      return rgbToHex(255, green, 0);
+    } else {
+      return "#ff0000";
+    }
+  };
+
   const mapScale = (
     depth: number,
     minInput: number = 0,
@@ -123,17 +144,29 @@ const WorldMap = ({
           .attr("class", "quake")
           .attr("cx", (d) => projection([d.longitude, d.latitude])[0])
           .attr("cy", (d) => projection([d.longitude, d.latitude])[1])
-          .attr("r", (d) => mapScale(d.magnitude))
-          .attr("stroke", (d) => magnitudeScaleToColor(d.magnitude))
+          .attr("r", (d) =>
+            bubbleOption === "Magnitude"
+              ? mapScale(d.magnitude)
+              : mapScale(d.depth, -1, 700)
+          )
+          .attr("stroke", (d) =>
+            bubbleOption === "Magnitude"
+              ? magnitudeScaleToColor(d.magnitude)
+              : depthScaleToColor(d.depth)
+          )
           .attr("stroke-width", 1)
-          .attr("fill", (d) => magnitudeScaleToColor(d.magnitude))
+          .attr("fill", (d) =>
+            bubbleOption === "Magnitude"
+              ? magnitudeScaleToColor(d.magnitude)
+              : depthScaleToColor(d.depth)
+          )
           .attr("fill-opacity", 0.4);
       }
     };
 
     drawMap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [earthquakeData, selectedMonth.month, selectedYear]);
+  }, [earthquakeData, selectedMonth.month, selectedYear, bubbleOption]);
 
   return <div ref={chartRef} className="world-map"></div>;
 };

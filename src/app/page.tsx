@@ -7,6 +7,8 @@ import { EarthquakeData, WorldMapProps } from "./types";
 import LineChart from "./yearLineChart";
 import YearLineChart from "./yearLineChart";
 import MonthLineChart from "./monthLineChart";
+import ReactSwitch from "react-switch";
+import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 
 const HomePage = () => {
   const eqData: WorldMapProps = useEarthquakeData();
@@ -44,6 +46,7 @@ const HomePage = () => {
               selectedYear={eqData.selectedYear}
             />
           </div>
+          <MagnitudeDepthSwitch />
           <WorldMap
             earthquakeData={eqData.earthquakeData}
             selectedMonth={eqData.selectedMonth}
