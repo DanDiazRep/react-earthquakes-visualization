@@ -47,7 +47,7 @@ const MonthLineChart = ({
     const drawLineChart = async () => {
       if (chartRef.current) {
         const width = 1450;
-        const height = 300;
+        const height = 200;
         const margin = { top: 20, right: 200, bottom: 30, left: 200 };
 
         // Clear the previous content of chartRef
@@ -167,8 +167,9 @@ const MonthLineChart = ({
           const index = bisect(data, x0);
           const selectedData = data[index];
 
-          const tooltipText = `${months[selectedData.month]}: ${selectedData.amount
-            } Earthquakes`;
+          const tooltipText = `${months[selectedData.month]}: ${
+            selectedData.amount
+          } Earthquakes`;
           tooltip
             .text(tooltipText)
             .style("opacity", 1)

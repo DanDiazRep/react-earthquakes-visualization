@@ -23,6 +23,20 @@ const HomePage = () => {
     state.year
   );
   const { countriesData } = useCountriesData();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const handleMonthChange = (newMonth: number) => {
     setState((prevState) => ({ ...prevState, month: newMonth }));
@@ -38,7 +52,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 className="text-4xl text-center">
+      <h1 className="text-4xl text-center" style={{ marginTop: 30 }}>
         Significant Earthquakes, 1965-2016
       </h1>
       <p
@@ -65,6 +79,21 @@ const HomePage = () => {
       </p>
       <YearSlider onChange={handleYearChange} currentYear={state.year} />
       <MonthSlider onChange={handleMonthChange} currentMonth={state.month} />
+      <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
+        {filteredData.length} Earthquakes in {months[state.month]} {state.year}
+      </h2>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MonthLineChart
+          earthquakeData={earthquakeData}
+          selectedYear={state.year}
+        />
+      </div>
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
       <WorldMap
         earthquakeData={filteredData}
@@ -158,18 +187,7 @@ const HomePage = () => {
       >
         <YearLineChart earthquakeData={earthquakeData} />
       </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <MonthLineChart
-          earthquakeData={earthquakeData}
-          selectedYear={state.year}
-        />
-      </div>
+
       <p>
         Data set:{" "}
         <a href="https://www.kaggle.com/datasets/usgs/earthquake-database">
