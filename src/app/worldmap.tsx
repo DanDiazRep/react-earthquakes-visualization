@@ -52,6 +52,18 @@ const WorldMap = ({
     return size;
   };
 
+  const mapScaleDepth = (
+    depth: number,
+    minInput: number = 0,
+    maxInput: number = 10,
+    minOutput: number = 1,
+    maxOutput: number = 20
+  ) => {
+    const reversedValue = 1 - (depth - minInput) / (maxInput - minInput);
+    const size = reversedValue * (maxOutput - minOutput) + minOutput;
+    return size;
+  };
+
   const magnitudeScaleToColor = (magnitude: number) => {
     if (magnitude <= 5.5) {
       return "#00ff00";
@@ -146,7 +158,7 @@ const WorldMap = ({
           .attr("r", (d) =>
             bubbleOption === "Magnitude"
               ? mapScale(d.magnitude)
-              : mapScale(d.depth, -1, 700)
+              : mapScaleDepth(d.depth, -1, 700)
           )
           .attr("stroke", (d) =>
             bubbleOption === "Magnitude"

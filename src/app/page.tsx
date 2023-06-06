@@ -12,7 +12,11 @@ import MonthLineChart from "./monthLineChart";
 import ReactSwitch from "react-switch";
 import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 
-const initialState: FilterState = { month: 1, year: 1965 };
+const initialState: FilterState = {
+  month: 1,
+  year: 1965,
+  bubbleOption: "Magnitude",
+};
 
 const HomePage = () => {
   const eqData = useEarthquakeData();
@@ -26,15 +30,21 @@ const HomePage = () => {
     setState((prevState) => ({ ...prevState, year: newYear }));
   };
 
+  const handleBubbleStatechange = (option: string) => {
+    setState((prevState) => ({ ...prevState, bubbleOption: option }));
+  };
+
   return (
     <div>
       <h1 className="text-4xl text-center">Earthquakes</h1>
       <YearSlider onChange={handleYearChange} currentYear={state.year} />
       <MonthSlider onChange={handleMonthChange} currentMonth={state.month} />
+      <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
       <WorldMap
         earthquakeData={eqData.earthquakeData}
         selectedMonth={state.month}
         selectedYear={state.year}
+        bubbleOption={state.bubbleOption}
       />
       <div
         style={{

@@ -25,6 +25,7 @@ export interface EarthquakesByYear {
 export interface FilterState {
     month: number;
     year: number;
+    bubbleOption: string;
 }
 
 export interface WorldMapProps {
@@ -44,7 +45,7 @@ export interface MonthLineChartProps {
 }
 
 export interface MagnitudeDepthSwitchProps {
-    // TODO
+    onChange: (value: string) => void;
 }
 
 interface arc {
