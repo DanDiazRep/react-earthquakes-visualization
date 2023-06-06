@@ -34,6 +34,15 @@ export interface WorldMapProps {
     bubbleOption?: string;
 }
 
+export interface YearLineChartProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface MonthLineChartProps {
+    earthquakeData: EarthquakeData[];
+    selectedYear: number;
+}
+
 interface arc {
     [index: number]: number[];
 }
