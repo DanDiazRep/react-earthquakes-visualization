@@ -39,6 +39,28 @@ const HomePage = () => {
       <h1 className="text-4xl text-center">
         Significant Earthquakes, 1965-2016
       </h1>
+      <p
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          //width: 400,
+          fontStyle: "italic",
+          marginTop: 25,
+          marginBottom: 25,
+          marginLeft: 100,
+          marginRight: 100,
+        }}
+      >
+        An earthquake is the sudden release of strain energy in the Earth’s
+        crust, resulting in waves of shaking that radiate outwards from the
+        earthquake source. When stresses in the crust exceed the strength of the
+        rock, it breaks along lines of weakness, either a pre-existing or new
+        fault plane. The point where an earthquake starts is termed the focus or
+        hypocentre and may be many kilometres deep within the earth. The point
+        at the surface directly above the focus is called the earthquake
+        epicentre.
+      </p>
       <YearSlider onChange={handleYearChange} currentYear={state.year} />
       <MonthSlider onChange={handleMonthChange} currentMonth={state.month} />
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
@@ -123,6 +145,10 @@ const HomePage = () => {
         </div>
       )}
 
+      <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
+        Total number of earthquakes from 1965 to 2016:{" "}
+        {eqData.earthquakeData.length}
+      </h2>
       <div
         style={{
           display: "flex",
