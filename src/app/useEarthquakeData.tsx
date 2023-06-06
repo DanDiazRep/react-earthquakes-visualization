@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { parse } from 'papaparse';
-import { EarthquakeData, WorldMapProps } from './types';
+import { EarthquakeData, FilterProps } from './types';
 
-const useEarthquakeData = (): WorldMapProps => {
+const useEarthquakeData = (selectedMonth: number, selectedYear: number): FilterProps => {
     const [eqData, setEqData] = useState<EarthquakeData[]>([]);
-    const [selectedMonth, setSelectedMonth] = useState({ month: 0, amount: 0 });
-    const [bubbleOption, setBubbleOption] = useState('Magnitude');
+    const [eqFilteredData, setFilteredEqData] = useState<EarthquakeData[]>([]);
 
-    useEffect(() => {
+    useMemo(() => {
         const fetchEarthquakeData = async () => {
             try {
                 const response = await fetch('/earthquake_data.csv');
@@ -27,7 +26,15 @@ const useEarthquakeData = (): WorldMapProps => {
                         year: new Date(element.Date).getFullYear(),
                         month: new Date(element.Date).getMonth(),
                     }))
-                    .filter((d) => !isNaN(d.year));
+                    .filter(
+                        (d) =>
+                            !isNaN(d.year) &&
+                            !isNaN(d.month) &&
+                            !isNaN(d.magnitude) &&
+                            !isNaN(d.depth) &&
+                            !isNaN(d.longitude) &&
+                            !isNaN(d.latitude)
+                    );
 
                 setEqData(filteredData);
             } catch (error) {
@@ -38,14 +45,15 @@ const useEarthquakeData = (): WorldMapProps => {
         fetchEarthquakeData();
     }, []);
 
-    return { earthquakeData: eqData, selectedMonth, bubbleOption, selectedYear: 1981 };
+    const filteredData = useMemo(() => {
+        // Filter data by selected month and year
+        console.log('filteredData');
+        setFilteredEqData(eqData.filter((d) => d.month === selectedMonth && d.year === selectedYear));
+        return eqFilteredData;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedMonth, selectedYear, eqData]);
+
+    return { earthquakeData: eqData, filteredData: eqFilteredData };
 };
 
 export default useEarthquakeData;
-
-
-
-
-
-
-

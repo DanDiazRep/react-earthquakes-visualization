@@ -5,18 +5,19 @@ import useEarthquakeData from './useEarthquakeData';
 import YearSlider from './yearSlider';
 import MonthSlider from './monthSlider';
 import { FilterState } from './types';
-import { EarthquakeData, WorldMapProps } from "./types";
+import { EarthquakeData, FilterProps } from "./types";
 import LineChart from "./yearLineChart";
 import YearLineChart from "./yearLineChart";
 import MonthLineChart from "./monthLineChart";
+import useCountriesData from './useCountriesData';
 
 const initialState: FilterState = { month: 1, year: 1965 };
 
-
-
 const HomePage = () => {
-  const eqData = useEarthquakeData();
   const [state, setState] = useState(initialState);
+  const { earthquakeData, filteredData } = useEarthquakeData(state.month, state.year);
+  const { countriesData } = useCountriesData();
+
 
   const handleMonthChange = (newMonth: number) => {
     setState((prevState) => ({ ...prevState, month: newMonth }));
@@ -31,7 +32,7 @@ const HomePage = () => {
       <h1 className="text-4xl text-center">Earthquakes</h1>
       <YearSlider onChange={handleYearChange} currentYear={state.year} />
       <MonthSlider onChange={handleMonthChange} currentMonth={state.month} />
-      <WorldMap earthquakeData={eqData.earthquakeData} selectedMonth={state.month} selectedYear={state.year} />
+      <WorldMap earthquakeData={filteredData} countryData={countriesData} />
       <div
         style={{
           display: "flex",
@@ -39,7 +40,7 @@ const HomePage = () => {
           justifyContent: "center",
         }}
       >
-        <YearLineChart earthquakeData={eqData.earthquakeData} />
+        <YearLineChart earthquakeData={earthquakeData} />
       </div>
       <div
         style={{
@@ -49,8 +50,8 @@ const HomePage = () => {
         }}
       >
         <MonthLineChart
-          earthquakeData={eqData.earthquakeData}
-          selectedYear={eqData.selectedYear}
+          earthquakeData={earthquakeData}
+          selectedYear={state.year}
         />
       </div>
     </div>

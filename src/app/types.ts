@@ -27,11 +27,9 @@ export interface FilterState {
     year: number;
 }
 
-export interface WorldMapProps {
+export interface FilterProps {
     earthquakeData: EarthquakeData[];
-    selectedMonth: number;
-    selectedYear: number;
-    bubbleOption?: string;
+    filteredData: EarthquakeData[];
 }
 
 export interface YearLineChartProps {
