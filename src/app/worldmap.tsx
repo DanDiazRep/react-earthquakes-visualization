@@ -4,13 +4,12 @@ import { WorldMapProps, GeoPathValueFn } from "./types";
 import fetchCountriesData from "./fetchCountriesData";
 import { feature } from "topojson-client";
 import { Topology } from "topojson-specification";
-import { select } from "d3-selection";
 
 const WorldMap = ({
   earthquakeData,
   selectedMonth,
-  bubbleOption,
-  selectedYear = 1990,
+  bubbleOption = "magnitude",
+  selectedYear,
 }: WorldMapProps) => {
   const chartRef = useRef(null);
 
@@ -18,26 +17,6 @@ const WorldMap = ({
     // Convert RGB values to hexadecimal format
     var rgb = blue | (green << 8) | (red << 16);
     return "#" + (0x1000000 + rgb).toString(16).slice(1);
-  };
-
-  const magnitudeScaleToColor = (magnitude: number) => {
-    if (magnitude <= 5.5) {
-      return "#00ff00";
-    } else if (magnitude < 6.0) {
-      // Calculate the green value based on the magnitude within the range
-      var green = Math.floor((magnitude - 5.5) * (255 / 0.5));
-      return rgbToHex(0, green, 0);
-    } else if (magnitude < 7.0) {
-      // Calculate the red value based on the magnitude within the range
-      var red = Math.floor((magnitude - 6.0) * (255 / 1.0));
-      return rgbToHex(red, 255, 0);
-    } else if (magnitude < 8.0) {
-      // Calculate the green value based on the magnitude within the range
-      var green = Math.floor((8.0 - magnitude) * (255 / 1.0));
-      return rgbToHex(255, green, 0);
-    } else {
-      return "#ff0000";
-    }
   };
 
   const depthScaleToColor = (depth: number) => {
@@ -73,11 +52,31 @@ const WorldMap = ({
     return size;
   };
 
+  const magnitudeScaleToColor = (magnitude: number) => {
+    if (magnitude <= 5.5) {
+      return "#00ff00";
+    } else if (magnitude < 6.0) {
+      // Calculate the green value based on the magnitude within the range
+      var green = Math.floor((magnitude - 5.5) * (255 / 0.5));
+      return rgbToHex(0, green, 0);
+    } else if (magnitude < 7.0) {
+      // Calculate the red value based on the magnitude within the range
+      var red = Math.floor((magnitude - 6.0) * (255 / 1.0));
+      return rgbToHex(red, 255, 0);
+    } else if (magnitude < 8.0) {
+      // Calculate the green value based on the magnitude within the range
+      var green = Math.floor((8.0 - magnitude) * (255 / 1.0));
+      return rgbToHex(255, green, 0);
+    } else {
+      return "#ff0000";
+    }
+  };
+
   useEffect(() => {
     const drawMap = async () => {
       if (chartRef.current) {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const width = window.innerWidth * 0.95;
+        const height = window.innerHeight * 0.95;
 
         // Clear the previous content of chartRef
         d3.select(chartRef.current).html("");
@@ -100,7 +99,7 @@ const WorldMap = ({
         const projection = d3.geoEqualEarth().fitSize([width, height], land);
 
         // Update the projection scale and translation based on the container size
-        projection.scale(projection.scale() * 0.8);
+        projection.scale(projection.scale());
         projection.translate([width / 2, height / 2]);
 
         // Define path generator
@@ -136,7 +135,7 @@ const WorldMap = ({
           .selectAll(".quake")
           .data(
             earthquakeData.filter(
-              (d) => d.month === selectedMonth.month && d.year === selectedYear
+              (d) => d.month === selectedMonth && d.year === selectedYear
             )
           )
           .enter()
@@ -166,9 +165,9 @@ const WorldMap = ({
 
     drawMap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [earthquakeData, selectedMonth.month, selectedYear, bubbleOption]);
+  }, [earthquakeData, selectedMonth, selectedYear, bubbleOption]);
 
-  return <div ref={chartRef} className="world-map"></div>;
+  return <div ref={chartRef} className="world-map p-10"></div>;
 };
 
 export default WorldMap;

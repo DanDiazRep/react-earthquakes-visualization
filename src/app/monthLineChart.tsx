@@ -29,7 +29,8 @@ const MonthLineChart = ({
 
   const getMonthLineData = () => {
     const yearGroupedData = d3.group(earthquakeData, (d) => d.year);
-    const currentYear = yearGroupedData.get(selectedYear) as EarthquakeData[];
+    const currentYear = yearGroupedData.get(selectedYear);
+    if (!currentYear) return [];
     const monthGroupedData = d3.group(currentYear, (d) => d.month);
 
     const monthLineData: EarthquakesByMonth[] = [...monthGroupedData]
@@ -166,9 +167,8 @@ const MonthLineChart = ({
           const index = bisect(data, x0);
           const selectedData = data[index];
 
-          const tooltipText = `${months[selectedData.month]}: ${
-            selectedData.amount
-          } Earthquakes`;
+          const tooltipText = `${months[selectedData.month]}: ${selectedData.amount
+            } Earthquakes`;
           tooltip
             .text(tooltipText)
             .style("opacity", 1)

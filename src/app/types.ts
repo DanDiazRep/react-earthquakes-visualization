@@ -22,11 +22,16 @@ export interface EarthquakesByYear {
     amount: number;
 }
 
+export interface FilterState {
+    month: number;
+    year: number;
+}
+
 export interface WorldMapProps {
     earthquakeData: EarthquakeData[];
-    selectedMonth: { month: number; amount: number };
+    selectedMonth: number;
     selectedYear: number;
-    bubbleOption: string;
+    bubbleOption?: string;
 }
 
 export interface YearLineChartProps {
