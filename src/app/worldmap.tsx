@@ -4,11 +4,8 @@ import { WorldMapProps, GeoPathValueFn } from './types';
 import fetchCountriesData from './fetchCountriesData';
 import { feature } from 'topojson-client';
 import { Topology } from 'topojson-specification';
-import { select } from 'd3-selection';
 
-
-
-const WorldMap = ({ earthquakeData, selectedMonth, bubbleOption, selectedYear = 1990 }: WorldMapProps) => {
+const WorldMap = ({ earthquakeData, selectedMonth, bubbleOption = "magnitude", selectedYear }: WorldMapProps) => {
     const chartRef = useRef(null);
 
     const rgbToHex = (red: number, green: number, blue: number) => {
@@ -48,8 +45,8 @@ const WorldMap = ({ earthquakeData, selectedMonth, bubbleOption, selectedYear = 
         const drawMap = async () => {
 
             if (chartRef.current) {
-                const width = window.innerWidth;
-                const height = window.innerHeight;
+                const width = window.innerWidth * 0.95;
+                const height = window.innerHeight * 0.95;
 
                 // Clear the previous content of chartRef
                 d3.select(chartRef.current).html('');
@@ -72,7 +69,7 @@ const WorldMap = ({ earthquakeData, selectedMonth, bubbleOption, selectedYear = 
                     .fitSize([width, height], land);
 
                 // Update the projection scale and translation based on the container size
-                projection.scale(projection.scale() * 0.8);
+                projection.scale(projection.scale());
                 projection.translate([width / 2, height / 2]);
 
                 // Define path generator
@@ -103,7 +100,7 @@ const WorldMap = ({ earthquakeData, selectedMonth, bubbleOption, selectedYear = 
 
                 // Add circles representing earthquakes
                 earthquakes.selectAll('.quake')
-                    .data(earthquakeData.filter(d => d.month === selectedMonth.month && d.year === selectedYear))
+                    .data(earthquakeData.filter(d => d.month === selectedMonth && d.year === selectedYear))
                     .enter()
                     .append('circle')
                     .attr('class', 'quake')
@@ -120,9 +117,10 @@ const WorldMap = ({ earthquakeData, selectedMonth, bubbleOption, selectedYear = 
 
         drawMap();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [earthquakeData, selectedMonth.month, selectedYear]);
+    }, [earthquakeData, selectedMonth, selectedYear]);
 
-    return <div ref={chartRef} className="world-map"></div>;
+    return <div ref={chartRef} className="world-map p-10"></div>;
+
 };
 
 export default WorldMap;
