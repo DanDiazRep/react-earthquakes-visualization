@@ -67,9 +67,7 @@ const HomePage = () => {
       <MonthSlider onChange={handleMonthChange} currentMonth={state.month} />
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
       <WorldMap
-        earthquakeData={earthquakeData}
-        selectedMonth={state.month}
-        selectedYear={state.year}
+        earthquakeData={filteredData}
         bubbleOption={state.bubbleOption}
         countryData={countriesData}
       />

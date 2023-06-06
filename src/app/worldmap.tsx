@@ -127,7 +127,11 @@ const WorldMap = (props: WorldMapProps) => {
       .transition()
       .ease(d3.easeSinInOut) // Apply easing function
       .duration(1000)
-      .attr("r", (d) => mapScale(d.magnitude))
+      .attr("r", (d) =>
+        props.bubbleOption === "Magnitude"
+          ? mapScale(d.magnitude)
+          : mapScaleDepth(d.depth, -1, 700)
+      )
       .attr("stroke-width", 1) // Increase stroke width for glowing effect
       .attr("fill-opacity", 0.4) // Increase fill opacity for glowing effect
       .transition()
@@ -136,7 +140,11 @@ const WorldMap = (props: WorldMapProps) => {
       .transition()
       .ease(d3.easeSinInOut) // Apply easing function
       .duration(600)
-      .attr("r", (d) => mapScale(d.magnitude * 0.5)) // Transition back to the initial radius of 0
+      .attr("r", (d) =>
+        props.bubbleOption === "Magnitude"
+          ? mapScale(d.magnitude * 0.5)
+          : mapScaleDepth(d.depth * 0.5, -1, 700)
+      )
       .attr("stroke-width", 2) // Reset stroke width
       .attr("fill-opacity", 0.1) // Reset fill opacity
       .on("end", animateCircles); // Restart the animation
@@ -220,10 +228,22 @@ const WorldMap = (props: WorldMapProps) => {
         .attr("class", "quake")
         .attr("cx", (d) => projection([d.longitude, d.latitude])[0])
         .attr("cy", (d) => projection([d.longitude, d.latitude])[1])
-        .attr("r", (d) => d.magnitude)
-        .attr("stroke", (d) => magnitudeScaleToColor(d.magnitude))
+        .attr("r", (d) =>
+          props.bubbleOption === "Magnitude"
+            ? mapScale(d.magnitude)
+            : mapScaleDepth(d.depth, -1, 700)
+        )
+        .attr("stroke", (d) =>
+          props.bubbleOption === "Magnitude"
+            ? magnitudeScaleToColor(d.magnitude)
+            : depthScaleToColor(d.depth)
+        )
         .attr("stroke-width", 1)
-        .attr("fill", (d) => magnitudeScaleToColor(d.magnitude))
+        .attr("fill", (d) =>
+          props.bubbleOption === "Magnitude"
+            ? magnitudeScaleToColor(d.magnitude)
+            : depthScaleToColor(d.depth)
+        )
         .attr("fill-opacity", 0.2)
         .append("title")
         .text((d) => {
