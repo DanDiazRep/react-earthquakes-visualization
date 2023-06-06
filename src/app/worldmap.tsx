@@ -173,8 +173,7 @@ const WorldMap = (props: WorldMapProps) => {
         }
 
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.earthquakeData, rotation]);
+    }, [animateCircles, magnitudeScaleToColor, props.earthquakeData, rotation, world]);
 
     if (!world.objects) {
         return <div className='p-10'>Loading...</div>;
