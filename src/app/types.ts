@@ -48,6 +48,11 @@ export interface MagnitudeDepthSwitchProps {
     onChange: (value: string) => void;
 }
 
+export interface LegendBubbleProps {
+    color: string;
+    value: string;
+}
+
 interface arc {
     [index: number]: number[];
 }

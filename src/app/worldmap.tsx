@@ -4,6 +4,7 @@ import { WorldMapProps, GeoPathValueFn } from "./types";
 import fetchCountriesData from "./fetchCountriesData";
 import { feature } from "topojson-client";
 import { Topology } from "topojson-specification";
+import LegendBubble from "./legendBubble";
 
 const WorldMap = ({
   earthquakeData,
@@ -13,6 +14,15 @@ const WorldMap = ({
 }: WorldMapProps) => {
   const chartRef = useRef(null);
 
+  const magnitudeSteps = [
+    "<= 5.5 Mag.",
+    "< 6.0 Mag.",
+    "< 7.0 Mag.",
+    "< 8.0 Mag.",
+    ">= 8.0 Mag.",
+  ];
+  const depthSteps = ["<= 140m", "< 280m", "< 420m", "< 560m", ">= 560m"];
+
   const rgbToHex = (red: number, green: number, blue: number) => {
     // Convert RGB values to hexadecimal format
     var rgb = blue | (green << 8) | (red << 16);
@@ -20,23 +30,18 @@ const WorldMap = ({
   };
 
   const depthScaleToColor = (depth: number) => {
-    // min: -1, max: 700 (140)
-    if (depth > 560) {
-      return "#00ff00";
-    } else if (depth > 420) {
-      // Calculate the green value based on the magnitude within the range
-      var green = Math.floor((560 - depth) * (255 / 0.5));
-      return rgbToHex(0, green, 0);
-    } else if (depth > 280) {
-      // Calculate the red value based on the magnitude within the range
-      var red = Math.floor((420 - depth) * (255 / 1.0));
-      return rgbToHex(red, 255, 0);
-    } else if (depth > 140) {
-      // Calculate the green value based on the magnitude within the range
-      var green = Math.floor((280 - depth) * (255 / 1.0));
-      return rgbToHex(255, green, 0);
+    // FIXXXXME simplified color scale for presentation
+    const colors = colorArray;
+    if (depth <= 140) {
+      return colors[4];
+    } else if (depth < 280) {
+      return colors[3];
+    } else if (depth < 420) {
+      return colors[2];
+    } else if (depth < 560) {
+      return colors[1];
     } else {
-      return "#ff0000";
+      return colors[0];
     }
   };
 
@@ -64,7 +69,34 @@ const WorldMap = ({
     return size;
   };
 
+  const colorScale = d3
+    .scaleLinear()
+    .domain([0, 4]) // Input domain: 0 to 4 (5 colors in total)
+    .range(["#00ff00", "#ff0000"]); // Color range from green to red
+
+  const colorArray = [
+    d3.color(colorScale(0)).formatHex(),
+    d3.color(colorScale(1)).formatHex(),
+    d3.color(colorScale(2)).formatHex(),
+    d3.color(colorScale(3)).formatHex(),
+    d3.color(colorScale(4)).formatHex(),
+  ];
+
   const magnitudeScaleToColor = (magnitude: number) => {
+    // FIXXXME simplified color scale for presentation
+    const colors = colorArray;
+    if (magnitude <= 5.5) {
+      return colors[0];
+    } else if (magnitude < 6.0) {
+      return colors[1];
+    } else if (magnitude < 7.0) {
+      return colors[2];
+    } else if (magnitude < 8.0) {
+      return colors[3];
+    } else {
+      return colors[4];
+    }
+
     if (magnitude <= 5.5) {
       return "#00ff00";
     } else if (magnitude < 6.0) {
@@ -179,7 +211,37 @@ const WorldMap = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [earthquakeData, selectedMonth, selectedYear, bubbleOption]);
 
-  return <div ref={chartRef} className="world-map p-10"></div>;
+  return (
+    <div>
+      <div ref={chartRef} className="world-map p-10"></div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          marginLeft: 50,
+        }}
+      >
+        {bubbleOption === "Magnitude"
+          ? magnitudeSteps.map((step, index) => (
+              <LegendBubble
+                key={index}
+                color={colorArray[index]}
+                value={step}
+              />
+            ))
+          : depthSteps
+              .reverse()
+              .map((step, index) => (
+                <LegendBubble
+                  key={index}
+                  color={colorArray[index]}
+                  value={step}
+                />
+              ))}
+      </div>
+    </div>
+  );
 };
 
 export default WorldMap;
