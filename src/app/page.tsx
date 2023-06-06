@@ -5,11 +5,9 @@ import useEarthquakeData from "./useEarthquakeData";
 import YearSlider from "./yearSlider";
 import MonthSlider from "./monthSlider";
 import { FilterState } from "./types";
-import { EarthquakeData, WorldMapProps } from "./types";
-import LineChart from "./yearLineChart";
 import YearLineChart from "./yearLineChart";
 import MonthLineChart from "./monthLineChart";
-import ReactSwitch from "react-switch";
+import useCountriesData from "./useCountriesData";
 import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 
 const initialState: FilterState = {
@@ -19,8 +17,12 @@ const initialState: FilterState = {
 };
 
 const HomePage = () => {
-  const eqData = useEarthquakeData();
   const [state, setState] = useState(initialState);
+  const { earthquakeData, filteredData } = useEarthquakeData(
+    state.month,
+    state.year
+  );
+  const { countriesData } = useCountriesData();
 
   const handleMonthChange = (newMonth: number) => {
     setState((prevState) => ({ ...prevState, month: newMonth }));
@@ -65,10 +67,11 @@ const HomePage = () => {
       <MonthSlider onChange={handleMonthChange} currentMonth={state.month} />
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
       <WorldMap
-        earthquakeData={eqData.earthquakeData}
+        earthquakeData={earthquakeData}
         selectedMonth={state.month}
         selectedYear={state.year}
         bubbleOption={state.bubbleOption}
+        countryData={countriesData}
       />
       {state.bubbleOption === "Depth" ? (
         <p style={{ marginLeft: 50, marginTop: 15 }}>
@@ -146,8 +149,7 @@ const HomePage = () => {
       )}
 
       <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
-        Total number of earthquakes from 1965 to 2016:{" "}
-        {eqData.earthquakeData.length}
+        Total number of earthquakes from 1965 to 2016: {earthquakeData.length}
       </h2>
       <div
         style={{
@@ -156,7 +158,7 @@ const HomePage = () => {
           justifyContent: "center",
         }}
       >
-        <YearLineChart earthquakeData={eqData.earthquakeData} />
+        <YearLineChart earthquakeData={earthquakeData} />
       </div>
       <div
         style={{
@@ -166,8 +168,8 @@ const HomePage = () => {
         }}
       >
         <MonthLineChart
-          earthquakeData={eqData.earthquakeData}
-          selectedYear={eqData.selectedYear}
+          earthquakeData={earthquakeData}
+          selectedYear={state.year}
         />
       </div>
       <p>
