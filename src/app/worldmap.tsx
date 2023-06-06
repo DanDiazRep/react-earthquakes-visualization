@@ -95,7 +95,7 @@ const WorldMap = (props: WorldMapProps) => {
             const land = feature(world, world.objects.land);
 
             // Define projection
-            const projection = d3.geoEquirectangular()//d3.geoOrthographic()
+            const projection = d3.geoNaturalEarth1()//d3.geoOrthographic()
                 .fitSize([width, height], land);
 
             // Update the projection scale and translation based on the container size
