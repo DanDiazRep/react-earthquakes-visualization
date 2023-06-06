@@ -17,11 +17,25 @@ export interface EarthquakesByMonth {
     amount: number;
 }
 
+export interface EarthquakesByYear {
+    year: number;
+    amount: number;
+}
+
 export interface WorldMapProps {
     earthquakeData: EarthquakeData[];
     selectedMonth: { month: number; amount: number };
     selectedYear: number;
     bubbleOption: string;
+}
+
+export interface YearLineChartProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface MonthLineChartProps {
+    earthquakeData: EarthquakeData[];
+    selectedYear: number;
 }
 
 interface arc {
