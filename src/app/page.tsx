@@ -69,7 +69,7 @@ const HomePage = () => {
         }}
       >
         The data for these visualizations include worldwide earthquakes with a
-        <strong> magnitude bigger than 5.5</strong> from 1965 until 2016.
+        <strong> magnitude starting at 5.5</strong> from 1965 until 2016.
       </p>
       <p
         style={{
