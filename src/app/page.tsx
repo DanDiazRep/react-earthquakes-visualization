@@ -61,6 +61,21 @@ const HomePage = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          marginTop: 25,
+          marginBottom: 25,
+          marginLeft: 100,
+          marginRight: 100,
+          whiteSpace: "pre-wrap",
+        }}
+      >
+        The data for these visualizations include worldwide earthquakes with a
+        <strong> magnitude bigger than 5.5</strong> from 1965 until 2016.
+      </p>
+      <p
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           fontStyle: "italic",
           marginTop: 25,
           marginBottom: 25,
@@ -117,6 +132,13 @@ const HomePage = () => {
       ) : (
         <div style={{ marginLeft: 50, marginTop: 15 }}>
           <p>
+            Magnitude is the size of the earthquake. (Source:{" "}
+            <a href="https://www.usgs.gov/programs/earthquake-hazards/earthquake-magnitude-energy-release-and-shaking-intensity#:~:text=Magnitude%20is%20the%20size%20of,details%20on%20shaking%20intensity%20measurements.">
+              USGS
+            </a>
+            )
+          </p>
+          <p>
             Magnitude scales can be used to describe earthquakes so small that
             they are expressed in negative numbers. The scale also has no upper
             limit.
@@ -132,8 +154,13 @@ const HomePage = () => {
       )}
 
       <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
-        Total number of earthquakes from 1965 to 2016: {earthquakeData.length}
+        Trend of Earthquakes from 1965 to 2016 - {earthquakeData.length}{" "}
+        Earthquakes
       </h2>
+      <h3 className="text-center" style={{ marginTop: 20 }}>
+        The number of earthquakes varies every year and there is not a strong
+        trend visible.
+      </h3>
       <div
         style={{
           display: "flex",
