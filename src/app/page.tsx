@@ -10,6 +10,7 @@ import MonthLineChart from "./monthLineChart";
 import useCountriesData from "./useCountriesData";
 import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 import MagInfoTable from "./magInfoTable";
+import MagDepthScatter from "./vega/magDepthScatter";
 
 const initialState: FilterState = {
   month: 1,
@@ -169,6 +170,18 @@ const HomePage = () => {
         }}
       >
         <YearLineChart earthquakeData={earthquakeData} />
+      </div>
+      <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
+        Correlation between Magnitude and Depth
+      </h2>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MagDepthScatter earthquakeData={earthquakeData} />
       </div>
 
       <p>

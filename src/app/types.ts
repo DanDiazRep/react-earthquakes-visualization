@@ -42,6 +42,10 @@ export interface MonthLineChartProps {
     selectedYear: number;
 }
 
+export interface MagDepthScatterProps {
+    earthquakeData: EarthquakeData[];
+}
+
 export interface MagnitudeDepthSwitchProps {
     onChange: (value: string) => void;
 }

@@ -132,7 +132,7 @@ const WorldMap = (props: WorldMapProps) => {
           ? mapScale(d.magnitude)
           : mapScaleDepth(d.depth, -1, 700)
       )
-      .attr("stroke-width", 1) // Increase stroke width for glowing effect
+      .attr("stroke-width", 0.1) // Increase stroke width for glowing effect
       .attr("fill-opacity", 0.4) // Increase fill opacity for glowing effect
       .transition()
       .duration(200) // Stay big for 200 milliseconds
