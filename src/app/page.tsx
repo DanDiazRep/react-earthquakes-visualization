@@ -11,6 +11,8 @@ import useCountriesData from "./useCountriesData";
 import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 import MagInfoTable from "./magInfoTable";
 import MagDepthScatter from "./vega/magDepthScatter";
+import DepthHistogram from "./vega/depthHistogram";
+import MagHistogram from "./vega/magHistogram";
 
 const initialState: FilterState = {
   month: 1,
@@ -172,8 +174,11 @@ const HomePage = () => {
         <YearLineChart earthquakeData={earthquakeData} />
       </div>
       <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
-        Correlation between Magnitude and Depth
+        Magnitude and Depth
       </h2>
+      <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
+        Correlation between Magnitude and Depth
+      </h3>
       <div
         style={{
           display: "flex",
@@ -183,7 +188,19 @@ const HomePage = () => {
       >
         <MagDepthScatter earthquakeData={earthquakeData} />
       </div>
-
+      <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
+        Distribution of Magnitude and Depth{" "}
+      </h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MagHistogram earthquakeData={earthquakeData} />
+        <DepthHistogram earthquakeData={earthquakeData} />
+      </div>
       <p>
         Data set:{" "}
         <a href="https://www.kaggle.com/datasets/usgs/earthquake-database">

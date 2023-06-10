@@ -46,6 +46,14 @@ export interface MagDepthScatterProps {
     earthquakeData: EarthquakeData[];
 }
 
+export interface DepthHistogramProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface MagHistogramProps {
+    earthquakeData: EarthquakeData[];
+}
+
 export interface MagnitudeDepthSwitchProps {
     onChange: (value: string) => void;
 }
