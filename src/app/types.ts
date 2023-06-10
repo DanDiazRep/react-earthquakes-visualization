@@ -54,6 +54,10 @@ export interface MagHistogramProps {
     earthquakeData: EarthquakeData[];
 }
 
+export interface ContinentHeatmap {
+    earthquakeData: EarthquakeData[];
+}
+
 export interface MagnitudeDepthSwitchProps {
     onChange: (value: string) => void;
 }

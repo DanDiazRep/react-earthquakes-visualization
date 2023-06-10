@@ -163,14 +163,16 @@ const MonthLineChart = ({
           const index = bisect(data, x0);
           const selectedData = data[index];
 
-          const tooltipText = `${months[selectedData.month]}: ${
-            selectedData.amount
-          } Earthquakes`;
-          tooltip
-            .text(tooltipText)
-            .style("opacity", 1)
-            .attr("x", xPosition + 10)
-            .attr("y", 75);
+          if (selectedData.month) {
+            const tooltipText = `${months[selectedData.month]}: ${
+              selectedData.amount
+            } Earthquakes`;
+            tooltip
+              .text(tooltipText)
+              .style("opacity", 1)
+              .attr("x", xPosition + 10)
+              .attr("y", 75);
+          }
         }
 
         function handleMouseOut() {

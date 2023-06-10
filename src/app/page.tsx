@@ -13,6 +13,7 @@ import MagInfoTable from "./magInfoTable";
 import MagDepthScatter from "./vega/magDepthScatter";
 import DepthHistogram from "./vega/depthHistogram";
 import MagHistogram from "./vega/magHistogram";
+import ContinentHeatmap from "./vega/continentHeatmap";
 
 const initialState: FilterState = {
   month: 1,
@@ -172,6 +173,18 @@ const HomePage = () => {
         }}
       >
         <YearLineChart earthquakeData={earthquakeData} />
+      </div>
+      <h3 className="text-xl text-center" style={{ marginTop: 20 }}>
+        Number of earthquakes per continent per year
+      </h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ContinentHeatmap earthquakeData={earthquakeData} />
       </div>
       <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
         Magnitude and Depth
