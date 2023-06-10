@@ -177,6 +177,10 @@ const HomePage = () => {
       <h3 className="text-xl text-center" style={{ marginTop: 20 }}>
         Number of earthquakes per continent per year
       </h3>
+      <h3 className="text-center" style={{ marginTop: 10 }}>
+        The heatmap shows that Asia and Oceania are particularly effected by
+        earthquakes.
+      </h3>
       <div
         style={{
           display: "flex",

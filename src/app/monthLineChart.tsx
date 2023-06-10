@@ -100,7 +100,7 @@ const MonthLineChart = ({
         const verticalLine = svg
           .append("line")
           .attr("class", "vertical-line")
-          .attr("stroke", "white")
+          .attr("stroke", "steelblue")
           .attr("stroke-width", 1)
           .attr("stroke-dasharray", "4")
           .attr("x1", 0)
@@ -114,8 +114,8 @@ const MonthLineChart = ({
           .attr("class", "tooltip")
           .attr("x", 10)
           .attr("y", 10)
-          .style("color", "white")
-          .style("fill", "white")
+          .style("color", "steelblue")
+          .style("fill", "steelblue")
           .style("opacity", 0);
 
         svg
