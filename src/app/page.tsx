@@ -14,11 +14,13 @@ import MagDepthScatter from "./vega/magDepthScatter";
 import DepthHistogram from "./vega/depthHistogram";
 import MagHistogram from "./vega/magHistogram";
 import ContinentHeatmap from "./vega/continentHeatmap";
+import FilteredEqSwitch from "./FilteredEqSwitch";
 
 const initialState: FilterState = {
   month: 1,
   year: 1965,
   bubbleOption: "Magnitude",
+  showFilteredData: "enabled",
 };
 
 const HomePage = () => {
@@ -53,6 +55,16 @@ const HomePage = () => {
 
   const handleBubbleStatechange = (option: string) => {
     setState((prevState) => ({ ...prevState, bubbleOption: option }));
+  };
+
+  const handleShowFilteredDataStatechange = (state: string) => {
+    // workaround as otherwise bubble animation breaks page, remove if not map with all data is not needed
+    setState((prevState) => ({ ...prevState, showFilteredData: "loading" }));
+    setTimeout(
+      () =>
+        setState((prevState) => ({ ...prevState, showFilteredData: state })),
+      1900
+    );
   };
 
   return (
@@ -114,10 +126,27 @@ const HomePage = () => {
         />
       </div>
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
+      <FilteredEqSwitch onChange={handleShowFilteredDataStatechange} />
+      {state.showFilteredData === "loading" && (
+        <p
+          style={{
+            marginLeft: 30,
+          }}
+        >
+          Loading...
+        </p>
+      )}
       <WorldMap
-        earthquakeData={filteredData}
+        earthquakeData={
+          state.showFilteredData === "enabled"
+            ? filteredData
+            : state.showFilteredData === "loading"
+            ? []
+            : earthquakeData
+        }
         bubbleOption={state.bubbleOption}
         countryData={countriesData}
+        bubbleAnimationEnabled={state.showFilteredData === "enabled"}
       />
       {state.bubbleOption === "Depth" ? (
         <p style={{ marginLeft: 50, marginTop: 15 }}>

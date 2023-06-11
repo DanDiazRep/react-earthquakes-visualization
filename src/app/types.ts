@@ -26,6 +26,7 @@ export interface FilterState {
     month: number;
     year: number;
     bubbleOption: string;
+    showFilteredData: string;
 }
 
 export interface FilterProps {
@@ -59,6 +60,10 @@ export interface ContinentHeatmap {
 }
 
 export interface MagnitudeDepthSwitchProps {
+    onChange: (value: string) => void;
+}
+
+export interface FilteredEqSwitch {
     onChange: (value: string) => void;
 }
 

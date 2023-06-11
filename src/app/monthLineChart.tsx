@@ -163,7 +163,7 @@ const MonthLineChart = ({
           const index = bisect(data, x0);
           const selectedData = data[index];
 
-          if (selectedData.month) {
+          if (selectedData && selectedData.month) {
             const tooltipText = `${months[selectedData.month]}: ${
               selectedData.amount
             } Earthquakes`;

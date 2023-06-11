@@ -10,6 +10,7 @@ interface WorldMapProps {
   earthquakeData: EarthquakeData[];
   countryData: Topology;
   bubbleOption: string;
+  bubbleAnimationEnabled: boolean;
 }
 
 const WorldMap = (props: WorldMapProps) => {
@@ -250,7 +251,9 @@ const WorldMap = (props: WorldMapProps) => {
           return `Longitude: ${d.longitude}, Latitude: ${d.latitude}, Depth: ${d.depth}, Magnitude: ${d.magnitude}`;
         });
 
-      animateCircles();
+      if (props.bubbleAnimationEnabled) {
+        animateCircles();
+      }
 
       // rotate the globe based on click release
       const drag = d3.drag().on("drag", function (event) {
