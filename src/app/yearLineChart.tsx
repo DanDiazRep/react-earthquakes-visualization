@@ -46,7 +46,7 @@ const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
           .domain([0, d3.max(data, (d) => d.amount) as number])
           .range([height - margin.bottom, margin.top]);
 
-        const xAxis = (g, scale = xScale) =>
+        const xAxis = (g: any, scale = xScale) =>
           g.attr("transform", `translate(0,${height - margin.bottom})`).call(
             d3
               .axisBottom(scale)
@@ -55,13 +55,13 @@ const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
               .tickFormat(d3.format("d"))
           );
 
-        const yAxis = (g, scale = yScale) =>
+        const yAxis = (g: any, scale = yScale) =>
           g
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(scale).ticks(height / 40));
 
         const line = d3
-          .line()
+          .line<EarthquakesByYear>()
           .x((d) => xScale(d.year))
           .y((d) => yScale(d.amount));
 
@@ -121,7 +121,7 @@ const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
         svg.append("g").call(yAxis);
 
         // mouse event functions
-        function handleMouseMove(event) {
+        function handleMouseMove(event: any) {
           const mouseX = d3.pointer(event)[0];
 
           let xPosition = mouseX;
@@ -138,7 +138,7 @@ const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
             .style("opacity", 1);
 
           const x0 = xScale.invert(xPosition);
-          const bisect = d3.bisector((d) => d.year).center;
+          const bisect = d3.bisector((d: EarthquakesByYear) => d.year).center;
           const index = bisect(data, x0);
           const selectedData = data[index];
 
