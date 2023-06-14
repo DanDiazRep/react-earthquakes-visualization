@@ -67,33 +67,37 @@ const MonthLineChart = ({
           .domain([0, 230])
           .range([height - margin.bottom, margin.top]);
 
-        const xAxis = (g, scale = xScale) =>
+        const xAxis = (g: { attr: (arg0: string, arg1: string) => { (): any; new(): any; call: { (arg0: d3.Axis<d3.NumberValue>): any; new(): any; }; }; }, scale = xScale) =>
           g.attr("transform", `translate(0,${height - margin.bottom})`).call(
             d3
               .axisBottom(scale)
               .ticks(width / 80)
               .tickSizeOuter(0)
-              .tickFormat((x) => months[x])
+              .tickFormat((x) => months[x as number])
           );
 
-        const yAxis = (g, scale = yScale) =>
+        const yAxis = (g: { attr: (arg0: string, arg1: string) => { (): any; new(): any; call: { (arg0: d3.Axis<d3.NumberValue>): any; new(): any; }; }; }, scale = yScale) =>
           g
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(scale).ticks(height / 40));
 
         const line = d3
-          .line()
+          .line<EarthquakesByMonth>()
           .x((d) => xScale(d.month))
           .y((d) => yScale(d.amount));
 
         svg
           .append("g")
           .attr("transform", `translate(0, ${height - margin.bottom})`)
-          .call(xAxis);
+          .call((selection) => {
+            selection.call(xAxis as unknown as (selection: any) => void);
+          });
         svg
           .append("g")
           .attr("transform", `translate(${margin.left}, 0)`)
-          .call(yAxis);
+          .call((selection) => {
+            selection.call(yAxis as unknown as (selection: any) => void);
+          });
 
         // vertical line and tooltip
         // vertical line and "tooltip"
@@ -121,11 +125,15 @@ const MonthLineChart = ({
         svg
           .append("g")
           .attr("transform", `translate(0, ${height - margin.bottom})`)
-          .call(xAxis);
+          .call((selection) => {
+            selection.call(xAxis as unknown as (selection: any) => void);
+          });
         svg
           .append("g")
           .attr("transform", `translate(${margin.left}, 0)`)
-          .call(yAxis);
+          .call((selection) => {
+            selection.call(yAxis as unknown as (selection: any) => void);
+          });
 
         svg
           .append("path")
@@ -138,11 +146,19 @@ const MonthLineChart = ({
 
         svg.on("mousemove", handleMouseMove).on("mouseout", handleMouseOut);
 
-        svg.append("g").call(xAxis);
-        svg.append("g").call(yAxis);
+        svg
+          .append("g")
+          .call((selection) => {
+            selection.call(xAxis as unknown as (selection: any) => void);
+          });
+        svg
+          .append("g")
+          .call((selection) => {
+            selection.call(yAxis as unknown as (selection: any) => void);
+          });
 
         // mouse event functions
-        function handleMouseMove(event) {
+        function handleMouseMove(event: any) {
           const mouseX = d3.pointer(event)[0];
 
           let xPosition = mouseX;
@@ -159,14 +175,13 @@ const MonthLineChart = ({
             .style("opacity", 1);
 
           const x0 = xScale.invert(xPosition);
-          const bisect = d3.bisector((d) => d.month).center;
+          const bisect = d3.bisector((d: EarthquakesByMonth) => d.month).center;
           const index = bisect(data, x0);
           const selectedData = data[index];
 
           if (selectedData && selectedData.month) {
-            const tooltipText = `${months[selectedData.month]}: ${
-              selectedData.amount
-            } Earthquakes`;
+            const tooltipText = `${months[selectedData.month]}: ${selectedData.amount
+              } Earthquakes`;
             tooltip
               .text(tooltipText)
               .style("opacity", 1)

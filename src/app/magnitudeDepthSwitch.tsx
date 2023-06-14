@@ -5,7 +5,7 @@ import ReactSwitch from "react-switch";
 const MagnitudeDepthSwitch = (props: MagnitudeDepthSwitchProps) => {
   const [depthToggleChecked, setDepthToggleChecked] = useState(false);
 
-  const handleToggleChange = (nextChecked) => {
+  const handleToggleChange = (nextChecked: boolean | ((prevState: boolean) => boolean)) => {
     setDepthToggleChecked(nextChecked);
     if (nextChecked === true) {
       // depth

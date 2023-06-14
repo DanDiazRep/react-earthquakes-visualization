@@ -5,7 +5,7 @@ import ReactSwitch from "react-switch";
 const FilteredEqSwitch = (props: FilteredEqSwitch) => {
   const [depthToggleChecked, setDepthToggleChecked] = useState(true);
 
-  const handleToggleChange = (nextChecked) => {
+  const handleToggleChange = (nextChecked: boolean | ((prevState: boolean) => boolean)) => {
     setDepthToggleChecked(nextChecked);
     if (nextChecked === true) {
       // depth

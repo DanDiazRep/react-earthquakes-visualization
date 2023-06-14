@@ -12,6 +12,7 @@ interface WorldMapProps {
     countryData: Topology;
     tectonicData: FeatureCollection;
     bubbleOption: string;
+    bubbleAnimationEnabled: boolean;
 }
 
 const WorldMap = (props: WorldMapProps) => {
@@ -75,15 +76,21 @@ const WorldMap = (props: WorldMapProps) => {
 
     const colorScale = d3
         .scaleLinear()
-        .domain([0, 4]) // Input domain: 0 to 4 (5 colors in total)
-        .range(["#00ff00", "#ff0000"]); // Color range from green to red
+        .domain([0, 4])
+        .range([0, 1]); // Adjust the range to numeric values (0 to 1)
+
+    // Optionally, you can map the numeric range to color values
+    const colorRange = ["#00ff00", "#ff0000"];
+    const mappedRange = colorRange.map((color, i) =>
+        colorScale(i / (colorRange.length - 1))
+    );
 
     const colorArray = [
-        d3.color(colorScale(0)).formatHex(),
-        d3.color(colorScale(1)).formatHex(),
-        d3.color(colorScale(2)).formatHex(),
-        d3.color(colorScale(3)).formatHex(),
-        d3.color(colorScale(4)).formatHex(),
+        d3.interpolate("#00ff00", "#ff0000")(colorScale(0)),
+        d3.interpolate("#00ff00", "#ff0000")(colorScale(1)),
+        d3.interpolate("#00ff00", "#ff0000")(colorScale(2)),
+        d3.interpolate("#00ff00", "#ff0000")(colorScale(3)),
+        d3.interpolate("#00ff00", "#ff0000")(colorScale(4))
     ];
 
     const magnitudeScaleToColor = (magnitude: number) => {
@@ -128,7 +135,7 @@ const WorldMap = (props: WorldMapProps) => {
             .transition()
             .ease(d3.easeSinInOut) // Apply easing function
             .duration(1000)
-            .attr("r", (d) =>
+            .attr("r", (d: any) =>
                 props.bubbleOption === "Magnitude"
                     ? mapScale(d.magnitude)
                     : mapScaleDepth(d.depth, -1, 700)
@@ -141,7 +148,7 @@ const WorldMap = (props: WorldMapProps) => {
             .transition()
             .ease(d3.easeSinInOut) // Apply easing function
             .duration(600)
-            .attr("r", (d) =>
+            .attr("r", (d: any) =>
                 props.bubbleOption === "Magnitude"
                     ? mapScale(d.magnitude * 0.5)
                     : mapScaleDepth(d.depth * 0.5, -1, 700)
@@ -248,8 +255,14 @@ const WorldMap = (props: WorldMapProps) => {
                 .enter()
                 .append("circle")
                 .attr("class", "quake")
-                .attr("cx", (d) => projection([d.longitude, d.latitude])[0])
-                .attr("cy", (d) => projection([d.longitude, d.latitude])[1])
+                .attr("cx", (d) => {
+                    const coords = projection([d.longitude, d.latitude]);
+                    return coords ? coords[0] : null;
+                })
+                .attr("cy", (d) => {
+                    const coords = projection([d.longitude, d.latitude]);
+                    return coords ? coords[1] : null;
+                })
                 .attr("r", (d) =>
                     props.bubbleOption === "Magnitude"
                         ? mapScale(d.magnitude)
