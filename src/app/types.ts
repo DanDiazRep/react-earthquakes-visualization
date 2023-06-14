@@ -26,6 +26,7 @@ export interface FilterState {
     month: number;
     year: number;
     bubbleOption: string;
+    showFilteredData: string;
 }
 
 export interface FilterProps {
@@ -42,7 +43,27 @@ export interface MonthLineChartProps {
     selectedYear: number;
 }
 
+export interface MagDepthScatterProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface DepthHistogramProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface MagHistogramProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface ContinentHeatmap {
+    earthquakeData: EarthquakeData[];
+}
+
 export interface MagnitudeDepthSwitchProps {
+    onChange: (value: string) => void;
+}
+
+export interface FilteredEqSwitch {
     onChange: (value: string) => void;
 }
 

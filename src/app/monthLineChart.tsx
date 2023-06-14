@@ -1,10 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import {
-  EarthquakeData,
-  EarthquakesByMonth,
-  MonthLineChartProps,
-} from "./types";
+import { EarthquakesByMonth, MonthLineChartProps } from "./types";
 
 const months = [
   "January",
@@ -104,7 +100,7 @@ const MonthLineChart = ({
         const verticalLine = svg
           .append("line")
           .attr("class", "vertical-line")
-          .attr("stroke", "white")
+          .attr("stroke", "steelblue")
           .attr("stroke-width", 1)
           .attr("stroke-dasharray", "4")
           .attr("x1", 0)
@@ -118,8 +114,8 @@ const MonthLineChart = ({
           .attr("class", "tooltip")
           .attr("x", 10)
           .attr("y", 10)
-          .style("color", "white")
-          .style("fill", "white")
+          .style("color", "steelblue")
+          .style("fill", "steelblue")
           .style("opacity", 0);
 
         svg
@@ -167,14 +163,16 @@ const MonthLineChart = ({
           const index = bisect(data, x0);
           const selectedData = data[index];
 
-          const tooltipText = `${months[selectedData.month]}: ${
-            selectedData.amount
-          } Earthquakes`;
-          tooltip
-            .text(tooltipText)
-            .style("opacity", 1)
-            .attr("x", xPosition + 10)
-            .attr("y", 75);
+          if (selectedData && selectedData.month) {
+            const tooltipText = `${months[selectedData.month]}: ${
+              selectedData.amount
+            } Earthquakes`;
+            tooltip
+              .text(tooltipText)
+              .style("opacity", 1)
+              .attr("x", xPosition + 10)
+              .attr("y", 75);
+          }
         }
 
         function handleMouseOut() {

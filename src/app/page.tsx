@@ -11,11 +11,17 @@ import useCountriesData from "./useCountriesData";
 import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 import MagInfoTable from "./magInfoTable";
 import useTectonicPlatesData from "./useTectonicPlatesData";
+import MagDepthScatter from "./vega/magDepthScatter";
+import DepthHistogram from "./vega/depthHistogram";
+import MagHistogram from "./vega/magHistogram";
+import ContinentHeatmap from "./vega/continentHeatmap";
+import FilteredEqSwitch from "./FilteredEqSwitch";
 
 const initialState: FilterState = {
   month: 1,
   year: 1965,
   bubbleOption: "Magnitude",
+  showFilteredData: "enabled",
 };
 
 const HomePage = () => {
@@ -53,6 +59,16 @@ const HomePage = () => {
     setState((prevState) => ({ ...prevState, bubbleOption: option }));
   };
 
+  const handleShowFilteredDataStatechange = (state: string) => {
+    // workaround as otherwise bubble animation breaks page, remove if not map with all data is not needed
+    setState((prevState) => ({ ...prevState, showFilteredData: "loading" }));
+    setTimeout(
+      () =>
+        setState((prevState) => ({ ...prevState, showFilteredData: state })),
+      1900
+    );
+  };
+
   return (
     <div>
       <h1 className="text-4xl text-center" style={{ marginTop: 30 }}>
@@ -71,7 +87,7 @@ const HomePage = () => {
         }}
       >
         The data for these visualizations include worldwide earthquakes with a
-        <strong> magnitude bigger than 5.5</strong> from 1965 until 2016.
+        <strong> magnitude starting at 5.5</strong> from 1965 until 2016.
       </p>
       <p
         style={{
@@ -112,11 +128,28 @@ const HomePage = () => {
         />
       </div>
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
+      <FilteredEqSwitch onChange={handleShowFilteredDataStatechange} />
+      {state.showFilteredData === "loading" && (
+        <p
+          style={{
+            marginLeft: 30,
+          }}
+        >
+          Loading...
+        </p>
+      )}
       <WorldMap
-        earthquakeData={filteredData}
+        earthquakeData={
+          state.showFilteredData === "enabled"
+            ? filteredData
+            : state.showFilteredData === "loading"
+              ? []
+              : earthquakeData
+        }
         bubbleOption={state.bubbleOption}
         countryData={countriesData}
         tectonicData={tectonicData}
+        bubbleAnimationEnabled={state.showFilteredData === "enabled"}
       />
       {state.bubbleOption === "Depth" ? (
         <p style={{ marginLeft: 50, marginTop: 15 }}>
@@ -173,7 +206,50 @@ const HomePage = () => {
       >
         <YearLineChart earthquakeData={earthquakeData} />
       </div>
-
+      <h3 className="text-xl text-center" style={{ marginTop: 20 }}>
+        Number of earthquakes per continent per year
+      </h3>
+      <h3 className="text-center" style={{ marginTop: 10 }}>
+        The heatmap shows that Asia and Oceania are particularly effected by
+        earthquakes.
+      </h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ContinentHeatmap earthquakeData={earthquakeData} />
+      </div>
+      <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
+        Magnitude and Depth
+      </h2>
+      <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
+        Correlation between Magnitude and Depth
+      </h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MagDepthScatter earthquakeData={earthquakeData} />
+      </div>
+      <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
+        Distribution of Magnitude and Depth{" "}
+      </h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MagHistogram earthquakeData={earthquakeData} />
+        <DepthHistogram earthquakeData={earthquakeData} />
+      </div>
       <p>
         Data set:{" "}
         <a href="https://www.kaggle.com/datasets/usgs/earthquake-database">
