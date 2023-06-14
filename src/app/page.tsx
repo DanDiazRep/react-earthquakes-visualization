@@ -10,6 +10,7 @@ import MonthLineChart from "./monthLineChart";
 import useCountriesData from "./useCountriesData";
 import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
 import MagInfoTable from "./magInfoTable";
+import useTectonicPlatesData from "./useTectonicPlatesData";
 
 const initialState: FilterState = {
   month: 1,
@@ -24,6 +25,7 @@ const HomePage = () => {
     state.year
   );
   const { countriesData } = useCountriesData();
+  const { tectonicData } = useTectonicPlatesData();
   const months = [
     "January",
     "February",
@@ -114,6 +116,7 @@ const HomePage = () => {
         earthquakeData={filteredData}
         bubbleOption={state.bubbleOption}
         countryData={countriesData}
+        tectonicData={tectonicData}
       />
       {state.bubbleOption === "Depth" ? (
         <p style={{ marginLeft: 50, marginTop: 15 }}>

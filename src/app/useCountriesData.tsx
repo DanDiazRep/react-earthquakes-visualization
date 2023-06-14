@@ -11,7 +11,6 @@ const useCountriesData = () => {
                 const response = await fetch('https://unpkg.com/world-atlas@2/countries-110m.json');
                 const data: Topology = await response.json();
                 setCountriesData(data);
-                console.log('countriesData', data);
             } catch (error) {
                 console.error('Error loading countries data:', error);
                 setCountriesData({} as Topology);
