@@ -286,6 +286,7 @@ const WorldMap = (props: WorldMapProps) => {
 
             //svg.call(drag as any);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [animateCircles, magnitudeScaleToColor, props.earthquakeData, rotation, world, props.bubbleOption, props.tectonicData, depthScaleToColor]);
 
     if (!world.objects) {

@@ -101,7 +101,7 @@ const HomePage = () => {
           marginRight: 100,
         }}
       >
-        An earthquake is the sudden release of strain energy in the Earth’s
+        An earthquake is the sudden release of strain energy in the Earth`s
         crust, resulting in waves of shaking that radiate outwards from the
         earthquake source. When stresses in the crust exceed the strength of the
         rock, it breaks along lines of weakness, either a pre-existing or new
@@ -153,7 +153,7 @@ const HomePage = () => {
       />
       {state.bubbleOption === "Depth" ? (
         <p style={{ marginLeft: 50, marginTop: 15 }}>
-          Earthquakes can occur anywhere between the Earth's surface and about
+          Earthquakes can occur anywhere between the Earth`s surface and about
           700 kilometers below the surface. For scientific purposes, this
           earthquake depth range of 0 - 700 km is divided into three zones:
           shallow, intermediate, and deep. (Source:
