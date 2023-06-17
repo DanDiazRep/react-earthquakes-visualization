@@ -55,7 +55,15 @@ export interface MagHistogramProps {
     earthquakeData: EarthquakeData[];
 }
 
-export interface ContinentHeatmap {
+export interface ContinentHeatmapProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface ContinentBarChartProps {
+    earthquakeData: EarthquakeData[];
+}
+
+export interface MonthBarChartProps {
     earthquakeData: EarthquakeData[];
 }
 

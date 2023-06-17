@@ -16,6 +16,8 @@ import DepthHistogram from "./vega/depthHistogram";
 import MagHistogram from "./vega/magHistogram";
 import ContinentHeatmap from "./vega/continentHeatmap";
 import FilteredEqSwitch from "./FilteredEqSwitch";
+import ContinentBarChart from "./vega/continentBarChart";
+import MonthBarChart from "./vega/monthBarChart";
 
 const initialState: FilterState = {
   month: 1,
@@ -143,8 +145,8 @@ const HomePage = () => {
           state.showFilteredData === "enabled"
             ? filteredData
             : state.showFilteredData === "loading"
-              ? []
-              : earthquakeData
+            ? []
+            : earthquakeData
         }
         bubbleOption={state.bubbleOption}
         countryData={countriesData}
@@ -190,7 +192,7 @@ const HomePage = () => {
       )}
 
       <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
-        Trend of Earthquakes from 1965 to 2016 - {earthquakeData.length}{" "}
+        Trend of Earthquakes from 1965 to 2016: {earthquakeData.length}{" "}
         Earthquakes
       </h2>
       <h3 className="text-center" style={{ marginTop: 20 }}>
@@ -209,10 +211,10 @@ const HomePage = () => {
       <h3 className="text-xl text-center" style={{ marginTop: 20 }}>
         Number of earthquakes per continent per year
       </h3>
-      <h3 className="text-center" style={{ marginTop: 10 }}>
+      <p className="text-center" style={{ marginTop: 5 }}>
         The heatmap shows that Asia and Oceania are particularly effected by
         earthquakes.
-      </h3>
+      </p>
       <div
         style={{
           display: "flex",
@@ -222,12 +224,43 @@ const HomePage = () => {
       >
         <ContinentHeatmap earthquakeData={earthquakeData} />
       </div>
+      <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
+        Continents and Months
+      </h3>
+      <p
+        className="text-center"
+        style={{
+          marginTop: 5,
+          marginBottom: 10,
+          marginRight: 50,
+          marginLeft: 50,
+        }}
+      >
+        As the heatmap already shows, Asia and Oceania are the most affected
+        continents. <br />
+        The most earthquakes happened in March and the least in June, however
+        there are not big differences between all of the months.
+      </p>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ContinentBarChart earthquakeData={earthquakeData} />
+        <MonthBarChart earthquakeData={earthquakeData} />
+      </div>
       <h2 className="text-2xl text-center" style={{ marginTop: 30 }}>
         Magnitude and Depth
       </h2>
       <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
         Correlation between Magnitude and Depth
       </h3>
+      <p className="text-center" style={{ marginTop: 5, marginBottom: 10 }}>
+        There is no correlation between magnitude and depth. This suggest that
+        there are many more factors which influence earthquakes.
+      </p>
       <div
         style={{
           display: "flex",
@@ -238,8 +271,22 @@ const HomePage = () => {
         <MagDepthScatter earthquakeData={earthquakeData} />
       </div>
       <h3 className="text-xl text-center" style={{ marginTop: 15 }}>
-        Distribution of Magnitude and Depth{" "}
+        Distribution of Magnitude and Depth
       </h3>
+      <p
+        className="text-center"
+        style={{
+          marginTop: 5,
+          marginBottom: 10,
+          marginRight: 50,
+          marginLeft: 50,
+        }}
+      >
+        Most earthquakes in this dataset have a magnitude between 5.5 and 6
+        which means they can cause slight damage to buildings and other
+        structures. <br /> They happen mostly at a depth between 0 and 100
+        meters.
+      </p>
       <div
         style={{
           display: "flex",
@@ -250,7 +297,7 @@ const HomePage = () => {
         <MagHistogram earthquakeData={earthquakeData} />
         <DepthHistogram earthquakeData={earthquakeData} />
       </div>
-      <p>
+      <p style={{ marginTop: 30 }}>
         Data set:{" "}
         <a href="https://www.kaggle.com/datasets/usgs/earthquake-database">
           Significant Earthquakes, 1965-2016

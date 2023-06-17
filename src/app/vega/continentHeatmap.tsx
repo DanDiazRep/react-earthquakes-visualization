@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { ContinentHeatmap } from "../types";
+import { ContinentHeatmapProps } from "../types";
 
-const ContinentHeatmap = ({ earthquakeData }: ContinentHeatmap) => {
+const ContinentHeatmap = ({ earthquakeData }: ContinentHeatmapProps) => {
   const defaultSpec = {
     data: {
       values: earthquakeData.filter(

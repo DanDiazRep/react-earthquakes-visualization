@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { DepthHistogramProps } from "../types";
+import { MonthBarChartProps } from "../types";
 
-const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
+const MonthBarChart = ({ earthquakeData }: MonthBarChartProps) => {
   const defaultSpec = {
     width: 500,
     height: 300,
@@ -11,12 +11,19 @@ const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
     mark: "bar",
     encoding: {
       x: {
-        field: "depth",
-        bin: true,
-        type: "quantitative",
-        axis: { title: "Depth" },
+        field: "month",
+        type: "nominal",
+        axis: {
+          title: "Month",
+          labelExpr:
+            "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.value]",
+        },
       },
-      y: { aggregate: "count", type: "quantitative" },
+      y: {
+        aggregate: "count",
+        type: "quantitative",
+        axis: { title: "Number of earthquakes" },
+      },
       tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
     },
   } as VisualizationSpec;
@@ -31,14 +38,19 @@ const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
       mark: "bar",
       encoding: {
         x: {
-          field: "depth",
-          bin: true,
-          type: "quantitative",
+          field: "month",
+          type: "nominal",
           axis: {
-            title: "Depth in meters (binned)",
+            title: "Months",
+            labelExpr:
+              "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.value]",
           },
         },
-        y: { aggregate: "count", type: "quantitative" },
+        y: {
+          aggregate: "count",
+          type: "quantitative",
+          axis: { title: "Number of earthquakes" },
+        },
         tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
       },
     } as VisualizationSpec;
@@ -48,4 +60,4 @@ const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
   return <VegaLite spec={chartSpec} />;
 };
 
-export default DepthHistogram;
+export default MonthBarChart;
