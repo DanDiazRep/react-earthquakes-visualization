@@ -8,7 +8,7 @@ const useTectonicPlatesData = () => {
     useMemo(() => {
         const fetchCountriesData = async () => {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json');
+                const response = await fetch('/tectonicplates.json');
                 const data: FeatureCollection = await response.json();
                 setTectonicData(data);
             } catch (error) {

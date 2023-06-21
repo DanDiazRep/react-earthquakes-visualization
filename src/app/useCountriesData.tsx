@@ -8,7 +8,7 @@ const useCountriesData = () => {
     useMemo(() => {
         const fetchCountriesData = async () => {
             try {
-                const response = await fetch('https://unpkg.com/world-atlas@2/countries-110m.json');
+                const response = await fetch('/countries-50m.json');
                 const data: Topology = await response.json();
                 setCountriesData(data);
             } catch (error) {
