@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { DepthHistogramProps } from "../types";
+import { ContinentBarChartProps } from "../types";
 
-const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
+const ContinentBarChart = ({ earthquakeData }: ContinentBarChartProps) => {
   const defaultSpec = {
     width: 500,
     height: 300,
@@ -11,12 +11,15 @@ const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
     mark: "bar",
     encoding: {
       x: {
-        field: "depth",
-        bin: true,
-        type: "quantitative",
-        axis: { title: "Depth" },
+        field: "continent",
+        type: "nominal",
+        axis: { title: "Continent" },
       },
-      y: { aggregate: "count", type: "quantitative" },
+      y: {
+        aggregate: "count",
+        type: "quantitative",
+        axis: { title: "Number of earthquakes" },
+      },
       tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
     },
   } as VisualizationSpec;
@@ -31,14 +34,15 @@ const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
       mark: "bar",
       encoding: {
         x: {
-          field: "depth",
-          bin: true,
-          type: "quantitative",
-          axis: {
-            title: "Depth in meters (binned)",
-          },
+          field: "continent",
+          type: "nominal",
+          axis: { title: "Continent" },
         },
-        y: { aggregate: "count", type: "quantitative" },
+        y: {
+          aggregate: "count",
+          type: "quantitative",
+          axis: { title: "Number of earthquakes" },
+        },
         tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
       },
     } as VisualizationSpec;
@@ -48,4 +52,4 @@ const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
   return <VegaLite spec={chartSpec} />;
 };
 
-export default DepthHistogram;
+export default ContinentBarChart;
