@@ -9,7 +9,7 @@ const useEarthquakeData = (selectedMonth: number, selectedYear: number): FilterP
     useMemo(() => {
         const fetchEarthquakeData = async () => {
             try {
-                const response = await fetch('/earthquake_data.csv');
+                const response = await fetch('https://earthquake-viz-fdb6c.web.app/public/earthquake_data.csv');
                 const data = await response.text();
 
                 const { data: parsedData } = parse(data, { header: true });
