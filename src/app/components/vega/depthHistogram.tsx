@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { MagHistogramProps } from "../types";
+import { DepthHistogramProps } from "../../types/types";
 
-const MagHistogram = ({ earthquakeData }: MagHistogramProps) => {
+const DepthHistogram = ({ earthquakeData }: DepthHistogramProps) => {
   const defaultSpec = {
     width: 500,
     height: 300,
@@ -11,10 +11,10 @@ const MagHistogram = ({ earthquakeData }: MagHistogramProps) => {
     mark: "bar",
     encoding: {
       x: {
-        field: "magnitude",
+        field: "depth",
         bin: true,
         type: "quantitative",
-        axis: { title: "Magnitude" },
+        axis: { title: "Depth" },
       },
       y: { aggregate: "count", type: "quantitative" },
       tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
@@ -31,10 +31,12 @@ const MagHistogram = ({ earthquakeData }: MagHistogramProps) => {
       mark: "bar",
       encoding: {
         x: {
-          field: "magnitude",
+          field: "depth",
           bin: true,
           type: "quantitative",
-          axis: { title: "Magnitude (binned)" },
+          axis: {
+            title: "Depth in meters (binned)",
+          },
         },
         y: { aggregate: "count", type: "quantitative" },
         tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
@@ -46,4 +48,4 @@ const MagHistogram = ({ earthquakeData }: MagHistogramProps) => {
   return <VegaLite spec={chartSpec} />;
 };
 
-export default MagHistogram;
+export default DepthHistogram;

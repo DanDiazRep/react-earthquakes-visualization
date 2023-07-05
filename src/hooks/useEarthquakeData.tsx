@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { parse } from "papaparse";
-import { EarthquakeData, FilterProps } from "./types";
+import { EarthquakeData, FilterProps } from "../app/types/types";
 
 const useEarthquakeData = (
     selectedMonth: number,

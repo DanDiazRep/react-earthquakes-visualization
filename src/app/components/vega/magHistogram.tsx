@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { MonthBarChartProps } from "../types";
+import { MagHistogramProps } from "../../types/types";
 
-const MonthBarChart = ({ earthquakeData }: MonthBarChartProps) => {
+const MagHistogram = ({ earthquakeData }: MagHistogramProps) => {
   const defaultSpec = {
     width: 500,
     height: 300,
@@ -11,19 +11,12 @@ const MonthBarChart = ({ earthquakeData }: MonthBarChartProps) => {
     mark: "bar",
     encoding: {
       x: {
-        field: "month",
-        type: "nominal",
-        axis: {
-          title: "Month",
-          labelExpr:
-            "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.value]",
-        },
-      },
-      y: {
-        aggregate: "count",
+        field: "magnitude",
+        bin: true,
         type: "quantitative",
-        axis: { title: "Number of earthquakes" },
+        axis: { title: "Magnitude" },
       },
+      y: { aggregate: "count", type: "quantitative" },
       tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
     },
   } as VisualizationSpec;
@@ -38,19 +31,12 @@ const MonthBarChart = ({ earthquakeData }: MonthBarChartProps) => {
       mark: "bar",
       encoding: {
         x: {
-          field: "month",
-          type: "nominal",
-          axis: {
-            title: "Months",
-            labelExpr:
-              "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.value]",
-          },
-        },
-        y: {
-          aggregate: "count",
+          field: "magnitude",
+          bin: true,
           type: "quantitative",
-          axis: { title: "Number of earthquakes" },
+          axis: { title: "Magnitude (binned)" },
         },
+        y: { aggregate: "count", type: "quantitative" },
         tooltip: [{ aggregate: "count", title: "Number of earthquakes" }],
       },
     } as VisualizationSpec;
@@ -60,4 +46,4 @@ const MonthBarChart = ({ earthquakeData }: MonthBarChartProps) => {
   return <VegaLite spec={chartSpec} />;
 };
 
-export default MonthBarChart;
+export default MagHistogram;

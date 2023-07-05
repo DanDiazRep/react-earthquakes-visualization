@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MagnitudeDepthSwitchProps } from "./types";
+import { MagnitudeDepthSwitchProps } from "../types/types";
 import ReactSwitch from "react-switch";
 
 const MagnitudeDepthSwitch = (props: MagnitudeDepthSwitchProps) => {

@@ -1,23 +1,23 @@
 "use client";
 import React, { useState } from "react";
-import WorldMap from "./worldmap";
-import useEarthquakeData from "./useEarthquakeData";
-import YearSlider from "./yearSlider";
-import MonthSlider from "./monthSlider";
-import { FilterState } from "./types";
-import YearLineChart from "./yearLineChart";
-import MonthLineChart from "./monthLineChart";
-import useCountriesData from "./useCountriesData";
-import MagnitudeDepthSwitch from "./magnitudeDepthSwitch";
-import MagInfoTable from "./magInfoTable";
-import useTectonicPlatesData from "./useTectonicPlatesData";
-import MagDepthScatter from "./vega/magDepthScatter";
-import DepthHistogram from "./vega/depthHistogram";
-import MagHistogram from "./vega/magHistogram";
-import ContinentHeatmap from "./vega/continentHeatmap";
-import FilteredEqSwitch from "./FilteredEqSwitch";
-import ContinentBarChart from "./vega/continentBarChart";
-import MonthBarChart from "./vega/monthBarChart";
+import WorldMap from "./components/worldmap";
+import useEarthquakeData from "../hooks/useEarthquakeData";
+import YearSlider from "./components/yearSlider";
+import MonthSlider from "./components/monthSlider";
+import { FilterState } from "./types/types";
+import YearLineChart from "./components/yearLineChart";
+import MonthLineChart from "./components/monthLineChart";
+import useCountriesData from "../hooks/useCountriesData";
+import MagnitudeDepthSwitch from "./components/magnitudeDepthSwitch";
+import MagInfoTable from "./components/magInfoTable";
+import useTectonicPlatesData from "../hooks/useTectonicPlatesData";
+import MagDepthScatter from "./components/vega/magDepthScatter";
+import DepthHistogram from "./components/vega/depthHistogram";
+import MagHistogram from "./components/vega/magHistogram";
+import ContinentHeatmap from "./components/vega/continentHeatmap";
+import FilteredEqSwitch from "./components/FilteredEqSwitch";
+import ContinentBarChart from "./components/vega/continentBarChart";
+import MonthBarChart from "./components/vega/monthBarChart";
 
 const initialState: FilterState = {
   month: 1,
@@ -124,10 +124,16 @@ const HomePage = () => {
           justifyContent: "center",
         }}
       >
-        <MonthLineChart
-          earthquakeData={earthquakeData}
-          selectedYear={state.year}
-        />
+        <div className="monthLineChartContainer">
+          <MonthLineChart
+            earthquakeData={earthquakeData}
+            selectedYear={state.year}
+          />
+          <p>Months</p>
+          <p id="monthLineChartYAxis"># of Earthquakes</p>
+        </div>
+
+
       </div>
       <MagnitudeDepthSwitch onChange={handleBubbleStatechange} />
       <FilteredEqSwitch onChange={handleShowFilteredDataStatechange} />
@@ -145,8 +151,8 @@ const HomePage = () => {
           state.showFilteredData === "enabled"
             ? filteredData
             : state.showFilteredData === "loading"
-            ? []
-            : earthquakeData
+              ? []
+              : earthquakeData
         }
         bubbleOption={state.bubbleOption}
         countryData={countriesData}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FilteredEqSwitch } from "./types";
+import { FilteredEqSwitch } from "../types/types";
 import ReactSwitch from "react-switch";
 
 const FilteredEqSwitch = (props: FilteredEqSwitch) => {

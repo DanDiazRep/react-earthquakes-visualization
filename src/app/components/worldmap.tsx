@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { GeoPathValueFn, EarthquakeData } from "./types";
-import fetchCountriesData from "./useCountriesData";
+import { GeoPathValueFn, EarthquakeData } from "../types/types";
+import fetchCountriesData from "../../hooks/useCountriesData";
 import { feature } from "topojson-client";
 import { Topology } from "topojson-specification";
 import LegendBubble from "./legendBubble";
@@ -130,33 +130,33 @@ const WorldMap = (props: WorldMapProps) => {
     const animateCircles = () => {
         const circles = d3.selectAll(".quake");
 
-        // Transition to grow the circles
-        circles
-            .transition()
-            .ease(d3.easeSinInOut) // Apply easing function
-            .duration(1000)
-            .attr("r", (d: any) =>
-                props.bubbleOption === "Magnitude"
-                    ? mapScale(d.magnitude)
-                    : mapScaleDepth(d.depth, -1, 700)
-            )
-            .attr("stroke-width", 0.1) // Increase stroke width for glowing effect
-            .attr("fill-opacity", 0.4) // Increase fill opacity for glowing effect
-            .transition()
-            .duration(200) // Stay big for 200 milliseconds
-            .ease(d3.easeSinInOut) // Apply easing function
-            .transition()
-            .ease(d3.easeSinInOut) // Apply easing function
-            .duration(600)
-            .attr("r", (d: any) =>
-                props.bubbleOption === "Magnitude"
-                    ? mapScale(d.magnitude * 0.5)
-                    : mapScaleDepth(d.depth * 0.5, -1, 700)
-            )
-            .attr("stroke-width", 2) // Reset stroke width
-            .attr("fill-opacity", 0.1) // Reset fill opacity
-            .on("end", animateCircles); // Restart the animation
+        circles.each(function (d, i) {
+            const circle = d3.select(this);
+
+            // Delay each circle animation by 100 milliseconds multiplied by its index
+            const delay = i * 200;
+
+            // Transition to grow the circle
+            circle
+                .transition()
+                .ease(d3.easeSinInOut) // Apply easing function
+                .duration(1000)
+                .delay(delay) // Add delay for each circle
+                .attr("r", (d: any) =>
+                    props.bubbleOption === "Magnitude"
+                        ? mapScale(d.magnitude)
+                        : mapScaleDepth(d.depth, -1, 700)
+                )
+                .attr("stroke-width", 0.1) // Increase stroke width for glowing effect
+                .attr("fill-opacity", 0.4); // Increase fill opacity for glowing effect
+        });
     };
+
+    // ...
+
+    // Call animateCircles after a delay of 1000 milliseconds
+    setTimeout(animateCircles, 1000);
+
 
     useEffect(() => {
         if (!world.objects) {
@@ -212,12 +212,6 @@ const WorldMap = (props: WorldMapProps) => {
                 .attr("opacity", 0.4)
                 .attr("class", "graticule");
 
-            /*map.append('path')
-                      .datum(land)
-                      .attr('d', path as GeoPathValueFn)
-                      .attr('class', 'land')
-                      .attr('fill', '#fff');*/
-
             map
                 .append("path")
                 .datum(borders)
@@ -239,14 +233,7 @@ const WorldMap = (props: WorldMapProps) => {
                 .attr("opacity", 0.7)
                 .attr("fill", "none")
                 .attr("stroke-width", 1)
-                .transition()
-                .ease(d3.easeSinInOut) // Apply easing function
-                .duration(1000)
-                .attr("stroke", "#ffff00")
-                .transition()
-                .ease(d3.easeSinInOut) // Apply easing function
-                .duration(1000)
-                .attr("stroke", "#ff0000")
+
 
             // Add circles representing earthquakes but if it is not on projection then don't show it
             earthquakes
@@ -265,8 +252,8 @@ const WorldMap = (props: WorldMapProps) => {
                 })
                 .attr("r", (d) =>
                     props.bubbleOption === "Magnitude"
-                        ? mapScale(d.magnitude)
-                        : mapScaleDepth(d.depth, -1, 700)
+                        ? mapScale(d.magnitude * 0.1)
+                        : mapScaleDepth(d.depth * 0.1, -1, 700)
                 )
                 .attr("stroke", (d) =>
                     props.bubbleOption === "Magnitude"

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { EarthquakesByMonth, MonthLineChartProps } from "./types";
+import { EarthquakesByMonth, MonthLineChartProps } from "../types/types";
 
 const months = [
   "January",
@@ -74,12 +74,30 @@ const MonthLineChart = ({
               .ticks(width / 80)
               .tickSizeOuter(0)
               .tickFormat((x) => months[x as number])
+
           );
 
         const yAxis = (g: { attr: (arg0: string, arg1: string) => { (): any; new(): any; call: { (arg0: d3.Axis<d3.NumberValue>): any; new(): any; }; }; }, scale = yScale) =>
           g
             .attr("transform", `translate(${margin.left},0)`)
-            .call(d3.axisLeft(scale).ticks(height / 40));
+            .call(d3.axisLeft(scale).ticks(height / 40))
+        // Append X axis label
+        svg
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("x", width - margin.right)
+          .attr("y", height - 10)
+          .style("text-anchor", "end")
+          .text("X LABS");
+
+        // Append Y axis label
+        svg
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("x", -margin.left)
+          .attr("y", margin.top)
+          .style("text-anchor", "start")
+          .text("Y LABS");
 
         const line = d3
           .line<EarthquakesByMonth>()
@@ -89,15 +107,21 @@ const MonthLineChart = ({
         svg
           .append("g")
           .attr("transform", `translate(0, ${height - margin.bottom})`)
-          .call((selection) => {
-            selection.call(xAxis as unknown as (selection: any) => void);
-          });
+          .call(xAxis as unknown as (selection: any) => void);
+
         svg
           .append("g")
           .attr("transform", `translate(${margin.left}, 0)`)
-          .call((selection) => {
-            selection.call(yAxis as unknown as (selection: any) => void);
-          });
+          .call(yAxis as unknown as (selection: any) => void);
+
+        svg
+          .append("path")
+          .datum(data)
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 1.5)
+          .attr("stroke-miterlimit", 1);
 
         // vertical line and tooltip
         // vertical line and "tooltip"
@@ -122,40 +146,7 @@ const MonthLineChart = ({
           .style("fill", "steelblue")
           .style("opacity", 0);
 
-        svg
-          .append("g")
-          .attr("transform", `translate(0, ${height - margin.bottom})`)
-          .call((selection) => {
-            selection.call(xAxis as unknown as (selection: any) => void);
-          });
-        svg
-          .append("g")
-          .attr("transform", `translate(${margin.left}, 0)`)
-          .call((selection) => {
-            selection.call(yAxis as unknown as (selection: any) => void);
-          });
-
-        svg
-          .append("path")
-          .datum(data)
-          .attr("d", line)
-          .attr("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 1.5)
-          .attr("stroke-miterlimit", 1);
-
         svg.on("mousemove", handleMouseMove).on("mouseout", handleMouseOut);
-
-        svg
-          .append("g")
-          .call((selection) => {
-            selection.call(xAxis as unknown as (selection: any) => void);
-          });
-        svg
-          .append("g")
-          .call((selection) => {
-            selection.call(yAxis as unknown as (selection: any) => void);
-          });
 
         // mouse event functions
         function handleMouseMove(event: any) {
@@ -180,8 +171,7 @@ const MonthLineChart = ({
           const selectedData = data[index];
 
           if (selectedData && selectedData.month) {
-            const tooltipText = `${months[selectedData.month]}: ${selectedData.amount
-              } Earthquakes`;
+            const tooltipText = `${months[selectedData.month]}: ${selectedData.amount} Earthquakes`;
             tooltip
               .text(tooltipText)
               .style("opacity", 1)
@@ -196,6 +186,7 @@ const MonthLineChart = ({
         }
       }
     };
+
 
     drawLineChart();
     // eslint-disable-next-line react-hooks/exhaustive-deps

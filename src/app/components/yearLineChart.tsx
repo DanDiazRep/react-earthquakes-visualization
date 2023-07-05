@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { EarthquakesByYear, YearLineChartProps } from "./types";
+import { EarthquakesByYear, YearLineChartProps } from "../types/types";
 
 const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
   const chartRef = useRef(null);
@@ -22,8 +22,8 @@ const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
     const drawLineChart = async () => {
       if (chartRef.current) {
         const width = 1450;
-        const height = 300;
-        const margin = { top: 20, right: 200, bottom: 30, left: 200 };
+        const height = 340;
+        const margin = { top: 20, right: 200, bottom: 60, left: 200 };
 
         // Clear the previous content of chartRef
         d3.select(chartRef.current).html("");
@@ -53,12 +53,28 @@ const YearLineChart = ({ earthquakeData }: YearLineChartProps) => {
               .ticks(width / 80)
               .tickSizeOuter(0)
               .tickFormat(d3.format("d"))
-          );
+          ).append("text")
+            .attr("x", width / 2)
+            .attr("y", 45)
+            .attr("fill", "currentColor")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "end")
+            .attr("font-size", "1.5em")
+            .text("Year");
 
         const yAxis = (g: any, scale = yScale) =>
           g
             .attr("transform", `translate(${margin.left},0)`)
-            .call(d3.axisLeft(scale).ticks(height / 40));
+            .call(d3.axisLeft(scale).ticks(height / 40)).append("text")
+            .attr("x", -100)
+            .attr("y", -60)
+            .attr("fill", "currentColor")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "end")
+            .attr("font-size", "1.5em")
+            .attr("transform", "rotate(-90)")
+            .text("Earthquakes");
+
 
         const line = d3
           .line<EarthquakesByYear>()

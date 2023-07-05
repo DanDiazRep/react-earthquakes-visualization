@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { MagDepthScatterProps } from "../types";
+import { MagDepthScatterProps } from "../../types/types";
 
 const MagDepthScatter = ({ earthquakeData }: MagDepthScatterProps) => {
   const defaultSpec = {

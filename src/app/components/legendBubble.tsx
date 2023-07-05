@@ -1,4 +1,4 @@
-import { LegendBubbleProps } from "./types";
+import { LegendBubbleProps } from "../types/types";
 
 const LegendBubble = (props: LegendBubbleProps) => {
   return (

@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { ContinentBarChartProps } from "../types";
+import { MonthBarChartProps } from "../../types/types";
 
-const ContinentBarChart = ({ earthquakeData }: ContinentBarChartProps) => {
+const MonthBarChart = ({ earthquakeData }: MonthBarChartProps) => {
   const defaultSpec = {
     width: 500,
     height: 300,
     data: { values: earthquakeData },
     mark: "bar",
     encoding: {
-      x: {
-        field: "continent",
-        type: "nominal",
-        axis: { title: "Continent" },
-      },
       y: {
+        field: "month",
+        type: "nominal",
+        axis: {
+          title: "Month",
+          labelExpr:
+            "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.value]",
+        },
+      },
+      x: {
         aggregate: "count",
         type: "quantitative",
         axis: { title: "Number of earthquakes" },
@@ -33,12 +37,16 @@ const ContinentBarChart = ({ earthquakeData }: ContinentBarChartProps) => {
       data: { values: earthquakeData },
       mark: "bar",
       encoding: {
-        x: {
-          field: "continent",
-          type: "nominal",
-          axis: { title: "Continent" },
-        },
         y: {
+          field: "month",
+          type: "nominal",
+          axis: {
+            title: "Months",
+            labelExpr:
+              "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][datum.value]",
+          },
+        },
+        x: {
           aggregate: "count",
           type: "quantitative",
           axis: { title: "Number of earthquakes" },
@@ -52,4 +60,4 @@ const ContinentBarChart = ({ earthquakeData }: ContinentBarChartProps) => {
   return <VegaLite spec={chartSpec} />;
 };
 
-export default ContinentBarChart;
+export default MonthBarChart;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { VegaLite, VisualizationSpec } from "react-vega";
 
-import { ContinentHeatmapProps } from "../types";
+import { ContinentHeatmapProps } from "../../types/types";
 
 const ContinentHeatmap = ({ earthquakeData }: ContinentHeatmapProps) => {
   const defaultSpec = {
